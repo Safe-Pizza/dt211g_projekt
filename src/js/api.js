@@ -59,6 +59,8 @@ function writeData(data) {
         const h3El = document.createElement("h3");
         const h4El = document.createElement("h4");
 
+        articleEl.classList.add("link");
+
         //lägg till text
         h3El.innerHTML = d.attributes.name.toUpperCase();
         h4El.innerHTML = d.attributes.address.street.toUpperCase() + ', ' + d.attributes.address.city.toUpperCase() + '<span class="fa-solid fa-location-dot"</span>';

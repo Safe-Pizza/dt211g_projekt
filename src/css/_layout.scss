@@ -3,3 +3,7 @@
 article {
     @include base.article;
 }
+
+article.link {
+    cursor: pointer;
+}
