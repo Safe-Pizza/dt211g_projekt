@@ -12,14 +12,17 @@
 <body>
 
   <div class="wrapper">
-    <header><a href="/">
+    <header><a href="/" title="startsida">
         <h1>BADPLATSER</h1>
       </a></header>
 
     <main>
       <section>
-        <h1>BADPLATSER I STOCKHOLM</h1>
-        <p>Här kan du hitta Stockholmsstads registrerade badplatser, vart de ligger och info om respektive badplats.</p>
+        <div id="start-content">
+          <h1>BADPLATSER I STOCKHOLM</h1>
+          <p>Här kan du hitta Stockholmsstads registrerade badplatser, vart de ligger och info om respektive badplats.
+          </p>
+        </div>
         <div id="search-container">
           <input id="search" type="text" placeholder="Sök badplats i Stockholm">
         </div>
@@ -35,7 +38,9 @@
         </div>
       </section>
     </main>
-    <footer><p>&copy; Hanna Lindkvist, 2026</p></footer>
+    <footer>
+      <p>&copy; Hanna Lindkvist, 2026</p>
+    </footer>
   </div>
 
   <script type="module" src="/src/js/main.js"></script>

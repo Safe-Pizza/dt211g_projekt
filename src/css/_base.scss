@@ -10,7 +10,7 @@ $sun-color: #FFD150;
 
 //colors dark scheme
 $font-color-dark: #F5F1DC;
-$bg-color-dark: #458B73;
+$bg-color-dark: #23463a;
 $accent-color: #FF9013;
 $location-color-dark: #b0c0ef;
 $water-color: #73C8D2;
@@ -32,6 +32,7 @@ $fontsize-p: 2rem;
     margin-bottom: 5rem;
     margin-top: 2rem;
     border-bottom: 1px $font-color solid;
+    width: 100%;
 }
 
 

@@ -85,8 +85,11 @@ function writeData(data) {
 async function writeUniqueData(uniqueBeachData) {
     const beachData = await fetchUniqueData(uniqueBeachData);
 
-    //avaktivera sökfält
-    document.querySelector("#search").disabled = true;
+    //ta bort start innehåll
+    document.querySelector("#start-content").innerHTML = "";
+
+    //göm sökfält
+    document.querySelector("#search").style.display = "none";
 
     const resultBeachEl = document.querySelector("#result-beach");
     resultBeachEl.innerHTML = "";

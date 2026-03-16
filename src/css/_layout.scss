@@ -1,5 +1,13 @@
 @use 'base';
 
+//sökfält
+#search {
+    box-sizing: border-box;
+    padding: 2rem;
+    width: 100%;
+    font-size: base.$fontsize-p;
+}
+
 article {
     @include base.article;
 }
@@ -8,10 +16,30 @@ article.link {
     cursor: pointer;
 }
 
+//kart div
+#map {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding-top: 56%;
+    font-size: 3rem;
+}
+
+.responsive-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+}
+
 //Animationer
 .animation-scale {
     transform: 1s;
 }
+
 .animation-scale:hover {
     transform: scale(1.05);
 }
@@ -22,8 +50,9 @@ article.link {
         background-color: base.$bg-color-dark;
         color: base.$font-color-dark;
     }
+
     span {
-    color: base.$location-color-dark;
+        color: base.$location-color-dark;
     }
 
     a {
