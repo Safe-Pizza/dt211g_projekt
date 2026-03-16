@@ -39,7 +39,7 @@ function writeData(data) {
 
         //lägg till text
         h3El.innerHTML = d.attributes.name.toUpperCase();
-        h4El.innerHTML = d.attributes.address.street.toUpperCase();
+        h4El.innerHTML = d.attributes.address.street.toUpperCase() + ", " + d.attributes.address.city.toUpperCase();
 
         //lägg till i article
         articleEl.appendChild(h3El);
@@ -56,7 +56,8 @@ function searchFilter(dataArr) {
 
         let dataArrFilt = dataArr.filter((data) =>
         data.attributes.name.toLowerCase().includes(input) ||
-        data.attributes.address.street.toLowerCase().includes(input)
+        data.attributes.address.street.toLowerCase().includes(input) ||
+        data.attributes.address.city.toLowerCase().includes(input)
     );
 
     writeData(dataArrFilt);
