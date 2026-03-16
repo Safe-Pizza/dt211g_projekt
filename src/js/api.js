@@ -60,6 +60,7 @@ function writeData(data) {
         const spanEl = document.createElement("span");
 
         articleEl.classList.add("link");
+        articleEl.classList.add("animation-scale");
 
         //lägg till text
         h2El.innerHTML = d.attributes.name.toUpperCase();

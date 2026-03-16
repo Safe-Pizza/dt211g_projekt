@@ -7,3 +7,11 @@ article {
 article.link {
     cursor: pointer;
 }
+
+//Animationer
+.animation-scale {
+    transform: 1s;
+}
+.animation-scale:hover {
+    transform: scale(1.05);
+}
