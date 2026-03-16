@@ -85,6 +85,9 @@ function writeData(data) {
 async function writeUniqueData(uniqueBeachData) {
     const beachData = await fetchUniqueData(uniqueBeachData);
 
+    //scrolla högst upp
+    window.scrollTo(0, 0);
+
     //ta bort start innehåll
     document.querySelector("#start-content").innerHTML = "";
 

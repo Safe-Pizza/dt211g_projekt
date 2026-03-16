@@ -35,6 +35,22 @@ article.link {
     height: 100%;
 }
 
+main {
+    ul {
+        font-size: base.$fontsize-p;
+        padding-bottom: 3rem;
+        list-style-position: inside;
+    }
+
+    a {
+        color: base.$accent-color;
+    }
+
+    a:hover {
+        color: base.$font-color;
+    }
+}
+
 //Animationer
 .animation-scale {
     transform: 1s;
@@ -56,16 +72,23 @@ article.link {
     }
 
     a {
-        text-decoration: none;
-    }
-
-    a {
         h1 {
             color: base.$font-color-dark;
         }
     }
 
-    article {
-        border-color: base.$font-color-dark;
+    main {
+        a {
+            color: base.$accent-color;
+            text-decoration: underline;
+        }
+
+        a:hover {
+            color: base.$font-color-dark;
+        }
     }
+
+article {
+    border-color: base.$font-color-dark;
+}
 }
