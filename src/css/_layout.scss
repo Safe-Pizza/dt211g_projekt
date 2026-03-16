@@ -1,6 +1,5 @@
 @use 'base';
 
-.wrapper {
-    max-width: 1200px;
-    margin: 0 auto;
+article {
+    @include base.article;
 }
