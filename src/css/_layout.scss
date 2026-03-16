@@ -44,6 +44,7 @@ main {
 
     a {
         color: base.$accent-color;
+        text-decoration: underline;
     }
 
     a:hover {
@@ -88,7 +89,7 @@ main {
         }
     }
 
-article {
-    border-color: base.$font-color-dark;
-}
+    article {
+        border-color: base.$font-color-dark;
+    }
 }
