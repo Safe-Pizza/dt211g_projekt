@@ -15,3 +15,28 @@ article.link {
 .animation-scale:hover {
     transform: scale(1.05);
 }
+
+//prefers dark
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: base.$bg-color-dark;
+        color: base.$font-color-dark;
+    }
+    span {
+    color: base.$location-color-dark;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    a {
+        h1 {
+            color: base.$font-color-dark;
+        }
+    }
+
+    article {
+        border-color: base.$font-color-dark;
+    }
+}
