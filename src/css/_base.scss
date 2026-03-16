@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&family=Shadows+Into+Light+Two&display=swap');
+
+//Colors
+$bg-color: #F5F1DC;
+$font-color: #458B73;
+$accent-color: #FF9013;
+$location-color: #0046FF;
+$water-color: #73C8D2;
+$sun-color: #FFD150;
+
+//Fonts
+$font-stack: "Poppins", sans-serif;
+$font-headings: "Shadows Into Light Two", cursive;
+
+//Font-sizes
+$fontsize-h1: 12.5rem;
+$fontsize-h2: 5rem;
+$fontsize-h3: 3.75rem;
+$fontsize-h4: 2.5rem;
+$fontsize-p: 1.75rem;
+
+
+//grundinställning för webbplatsen
+* {
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    font-size: 62.5%;
+}
+
+
+//typsnitt, storlekar och färger samt margin/padding för dessa
+body {
+    font-family: $font-stack;
+    background-color: $bg-color;
+    color: $font-color;
+}
+
+
+h1 {
+    font-size: $fontsize-h1;
+    font-family: $font-headings;
+    color: $font-color;
+    padding-top: 5vh;
+    margin-bottom: 1em;
+}
+
+
+h2 {
+    font-size: $fontsize-h2;
+    font-family: $font-headings;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+h3 {
+    font-size: $fontsize-h3;
+    font-family: $font-headings;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+h3 {
+    font-size: $fontsize-h4;
+    font-family: $font-headings;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+p {
+    font-size: $fontsize-p;
+    margin-bottom: 2em;
+    text-align: left;
+    line-height: 3.8rem;
+}
