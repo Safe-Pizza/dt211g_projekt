@@ -56,18 +56,18 @@ function writeData(data) {
     data.forEach(d => {
 
         const articleEl = document.createElement("article");
-        const h3El = document.createElement("h3");
-        const h4El = document.createElement("h4");
+        const h2El = document.createElement("h2");
+        const spanEl = document.createElement("span");
 
         articleEl.classList.add("link");
 
         //lägg till text
-        h3El.innerHTML = d.attributes.name.toUpperCase();
-        h4El.innerHTML = d.attributes.address.street.toUpperCase() + ', ' + d.attributes.address.city.toUpperCase() + '<span class="fa-solid fa-location-dot"</span>';
+        h2El.innerHTML = d.attributes.name.toUpperCase();
+        spanEl.innerHTML = d.attributes.address.street.toUpperCase() + ', ' + d.attributes.address.city.toUpperCase() + '<span class="fa-solid fa-location-dot"</span>';
 
         //lägg till i article
-        articleEl.appendChild(h3El);
-        articleEl.appendChild(h4El);
+        articleEl.appendChild(h2El);
+        articleEl.appendChild(spanEl);
 
         //skriv ut till DOM
         resultBeachEl.appendChild(articleEl);
@@ -91,21 +91,22 @@ async function writeUniqueData(uniqueBeachData) {
     resultBeachEl.innerHTML = "";
 
     const articleEl = document.createElement("article");
-    const h3El = document.createElement("h3");
-    const h4El = document.createElement("h4");
+    const h2El = document.createElement("h2");
+    const spanEl = document.createElement("span");
     const pEl = document.createElement("p");
-    const p2El = document.createElement("p");
+    const divEl = document.createElement("div");
 
     //lägg till text
-    h3El.innerHTML = beachData.attributes.name.toUpperCase();
-    h4El.innerHTML = beachData.attributes.address.street.toUpperCase() + ', ' + beachData.attributes.address.city.toUpperCase() + '<span class="fa-solid fa-location-dot"</span>';
+    h2El.innerHTML = beachData.attributes.name.toUpperCase();
+    spanEl.innerHTML = beachData.attributes.address.street.toUpperCase() + ', ' + beachData.attributes.address.city.toUpperCase() + '<span class="fa-solid fa-location-dot"</span>';
     pEl.innerHTML = beachData.attributes.shortDescription;
-    p2El.innerHTML = beachData.attributes.contentSections;
+    divEl.innerHTML = beachData.attributes.contentSections["17"].content;
 
     //lägg till i article
-    articleEl.appendChild(h3El);
-    articleEl.appendChild(h4El);
+    articleEl.appendChild(h2El);
+    articleEl.appendChild(spanEl);
     articleEl.appendChild(pEl);
+    articleEl.appendChild(divEl);
 
     //skriv ut till DOM
     resultBeachEl.appendChild(articleEl);

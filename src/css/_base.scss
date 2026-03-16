@@ -17,7 +17,7 @@ $fontsize-h1: 12.5rem;
 $fontsize-h2: 5rem;
 $fontsize-h3: 3.75rem;
 $fontsize-h4: 2.5rem;
-$fontsize-p: 1.75rem;
+$fontsize-p: 2rem;
 
 //mixins
 @mixin article() {
@@ -52,27 +52,40 @@ body {
 }
 
 
-h1 {
-    font-size: $fontsize-h1;
-    font-family: $font-headings;
-    color: $font-color;
-    padding-top: 5vh;
-    margin-bottom: 1em;
+a {
+    h1 {
+        font-size: $fontsize-h1;
+        font-family: $font-headings;
+        color: $font-color;
+        padding-top: 5vh;
+        margin-bottom: 1em;
+        text-transform: uppercase;
+    }
 }
 
 
-h2 {
+h1 {
     font-size: $fontsize-h2;
     font-family: $font-headings;
     margin-top: 1em;
     margin-bottom: 0.5em;
+    text-transform: uppercase;
 }
 
-h3 {
+h2 {
     font-size: $fontsize-h3;
     font-family: $font-headings;
     margin-top: 1em;
     margin-bottom: 0.5em;
+    text-transform: uppercase;
+}
+
+h3 {
+    font-size: $fontsize-h4;
+    font-family: $font-headings;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    text-transform: uppercase;
 }
 
 h4 {
@@ -80,6 +93,7 @@ h4 {
     font-family: $font-headings;
     margin-top: 1em;
     margin-bottom: 0.5em;
+    text-transform: uppercase;
 }
 
 p {
@@ -91,4 +105,8 @@ p {
 
 span {
     color: $location-color;
+    font-size: $fontsize-h4;
+    font-family: $font-headings;
+    margin-bottom: 0.5em;
+    text-transform: uppercase;
 }
