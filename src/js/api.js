@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 })
 
-//hämta JSON-data vattenfontäner
+//hämta JSON-data badplatser
 async function fetchData() {
     try {
         const response = await fetch("https://apigw.stockholm.se/api/PublicHittaCMS/api/serviceunits?&filter[servicetype.id]=104&page[limit]=1500&page[offset]=0&sort=name");
@@ -25,11 +25,21 @@ async function fetchData() {
     }
 }
 
+async function fetchUniqueData(uniqueData) {
+    try {
+        const response = await fetch(uniqueData);
+        const data = await response.json();
+
+        return data.data;
+
+    } catch (error) {
+        console.error(`Felmeddelande ${error}`);
+    }
+}
+
 function writeData(data) {
     const resultBeachEl = document.querySelector("#result-beach");
     resultBeachEl.innerHTML = "";
-
-    console.log(data);
 
     data.forEach(d => {
 
@@ -49,11 +59,36 @@ function writeData(data) {
         resultBeachEl.appendChild(articleEl);
 
         //eventlyssnare för klick(
-        articleEl.addEventListener("click", () => {
+        articleEl.addEventListener("click", async () => {
             writeUniqueData(d.links.self)
         })
     })
 
+}
+
+async function writeUniqueData(uniqueBeachData) {
+    const beachData = await fetchUniqueData(uniqueBeachData);
+
+    const resultBeachEl = document.querySelector("#result-beach");
+    resultBeachEl.innerHTML = "";
+
+        const articleEl = document.createElement("article");
+        const h3El = document.createElement("h3");
+        const h4El = document.createElement("h4");
+        const pEl = document.createElement("p");
+
+        //lägg till text
+        h3El.innerHTML = beachData.attributes.name.toUpperCase();
+        h4El.innerHTML = beachData.attributes.address.street.toUpperCase() + ', ' + beachData.attributes.address.city.toUpperCase() + '<span class="fa-solid fa-location-dot"</span>';
+        pEl.innerHTML = beachData.attributes.shortDescription;
+
+        //lägg till i article
+        articleEl.appendChild(h3El);
+        articleEl.appendChild(h4El);
+        articleEl.appendChild(pEl);
+
+        //skriv ut till DOM
+        resultBeachEl.appendChild(articleEl);
 }
 
 function searchFilter(dataArr) {
@@ -66,8 +101,4 @@ function searchFilter(dataArr) {
     );
 
     writeData(dataArrFilt);
-}
-
-function writeUniqueData(uniqueData) {
-    console.log(uniqueData);
 }
