@@ -1,7 +1,14 @@
 "use strict";
+let allData = [];
+
 //ladda DOM
 document.addEventListener("DOMContentLoaded", () => {
     fetchData();
+
+    //händelselyssnare för sökfunktion
+    document.querySelector("#search").addEventListener("input", () => {
+        searchFilter(allData);
+    });
 })
 
 //hämta JSON-data vattenfontäner
@@ -10,6 +17,7 @@ async function fetchData() {
         const response = await fetch("https://apigw.stockholm.se/api/PublicHittaCMS/api/serviceunits?&filter[servicetype.id]=104&page[limit]=1500&page[offset]=0&sort=name");
         const data = await response.json();
 
+        allData = data.data;
         writeData(data.data);
 
     } catch (error) {
@@ -41,4 +49,15 @@ function writeData(data) {
         resultBeachEl.appendChild(articleEl);
     })
 
+}
+
+function searchFilter(dataArr) {
+    let input = document.querySelector("#search").value.toLowerCase();
+
+        let dataArrFilt = dataArr.filter((data) =>
+        data.attributes.name.toLowerCase().includes(input) ||
+        data.attributes.address.street.toLowerCase().includes(input)
+    );
+
+    writeData(dataArrFilt);
 }
