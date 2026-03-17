@@ -93,7 +93,7 @@ main {
     top: 0;
     left: 0;
     opacity: 0;
-    animation: flyingSun 10s linear 2;
+    animation: flyingSun 6s linear 1;
 }
 
 //prefers dark
@@ -160,6 +160,17 @@ p {
 
 #result-beach span {
     font-size: base.$fontsize-h4-mo;
+}
+
+#weather {
+    span {
+        font-size: base.$fontsize-h4-mo;
+    }
+}
+
+#weather {
+    display: flex;
+    flex-direction: column;
 }
     
 }
