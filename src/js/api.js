@@ -1,17 +1,36 @@
 "use strict";
 let allData = [];
 
-//ladda DOM
+/**
+ * Händelselyssnare för DOM färdigladdat
+ * Anropar sedan fetchData för att hämta innehåll
+ * 
+ * @event DOMContentLoaded
+ * @returns {void} - returnerar inget värde utan anropar funktion när DOM laddat klart
+ */
 document.addEventListener("DOMContentLoaded", () => {
     fetchData();
 
-    //händelselyssnare för sökfunktion
+    /**
+     * Händelselyssnare för inputfält
+     * Vid input anropas funktion searchFilter
+     * 
+     * @param {array} allData - array med data sparad vid API-hämtning
+     * @returns {void} - returnerar inget värde, anropar funktion vid input
+     */
     document.querySelector("#search").addEventListener("input", () => {
         searchFilter(allData);
     });
 })
 
-//hämta JSON-data badplatser
+/**
+ * Hämtar Stockholms Stads badplatser från API
+ * Data skickas vidare till writeData, data lagras i variabel
+ * 
+ * @property {array} allData - array med data från API
+ * @returns {void} - returnerar inget värde, anropar funktion
+ * @throws {error} - skriver ut fel i konsol om hämtning misslyckas
+ */
 async function fetchData() {
     try {
         const response = await fetch("https://apigw.stockholm.se/api/PublicHittaCMS/api/serviceunits?&filter[servicetype.id]=104&page[limit]=1500&page[offset]=0&sort=name");
@@ -25,6 +44,13 @@ async function fetchData() {
     }
 }
 
+/**
+ * Hämtar unik badplats från Stockholms Stads API
+ * 
+ * @param {url} uniqueData - URL för unik badplats
+ * @returns {object} - returnerar objekt för specifik badplats
+ * @throws {error} - skriver ut fel i konsol om hämtning misslyckas
+ */
 async function fetchUniqueData(uniqueData) {
     try {
         const response = await fetch(uniqueData);
@@ -37,6 +63,13 @@ async function fetchUniqueData(uniqueData) {
     }
 }
 
+/**
+ * Hämtar geo-info om specifik gatuadress från API
+ * 
+ * @param {string} street - textsträng med badplats gatuadress
+ * @returns {array} - returerar array med positionsdata för gatuadress
+ * @throws {error} - skriver ut felmeddelande i DOM om hämtning misslyckas
+ */
 async function fetchLocationData(street) {
     try {
         const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${street}&format=jsonv2`);
@@ -49,6 +82,14 @@ async function fetchLocationData(street) {
     }
 }
 
+/**
+ * Hämtar väder-info för specifik plats från API
+ * 
+ * @param {string} la - textsträng med latitud
+ * @param {string} lo - textsträng med longitud
+ * @returns {void} - returnerar inget värde, anropar funktion
+ * @throws {error} - skriver ut fel i konsol om hämtning misslyckas
+ */
 async function fetchWeather(la, lo) {
 
     try {
@@ -62,6 +103,13 @@ async function fetchWeather(la, lo) {
     }
 }
 
+/**
+ * Skapar DOM-element med innehåll från API
+ * och skriver ut till DOM
+ * 
+ * @param {array} data - array med badplatser från Stockholm Stads API
+ * @returns {void} - returnerar inget värde
+ */
 function writeData(data) {
     const resultBeachEl = document.querySelector("#result-beach");
     resultBeachEl.innerHTML = "";
@@ -86,7 +134,14 @@ function writeData(data) {
         //skriv ut till DOM
         resultBeachEl.appendChild(articleEl);
 
-        //eventlyssnare för klick(
+        /**
+         * Händelselyssnare för klick på article-element
+         * Anropar funktioner writeUniqueData och ShowMap
+         * 
+         * @event click
+         * @returns {void} - returerar inget värde, anropar funktioner
+         * 
+         */
         articleEl.addEventListener("click", async () => {
             writeUniqueData(d.links.self);
             showMap(d.attributes.address.street);
@@ -95,6 +150,13 @@ function writeData(data) {
 
 }
 
+/**
+ * Skapar DOM-element för unik badplats från API
+ * och skriver ut till DOM
+ * 
+ * @param {object} uniqueBeachData - object för specifik badplats från API
+ * @returns {void} - returerar inget värde
+ */
 async function writeUniqueData(uniqueBeachData) {
     const beachData = await fetchUniqueData(uniqueBeachData);
 
@@ -133,6 +195,13 @@ async function writeUniqueData(uniqueBeachData) {
     resultBeachEl.appendChild(articleEl);
 }
 
+/**
+ * Skriver ut karta för badplats till DOM
+ * och anropar väder-funktion
+ * 
+ * @param {string} address - textsträng med gatuadress för unik badplats
+ * @returns {void} - returnerar inget värde
+ */
 async function showMap(address) {
     const addressArr = await fetchLocationData(address);
     const mapEl = document.querySelector("#map");
@@ -151,6 +220,12 @@ async function showMap(address) {
     mapEl.innerHTML = `<iframe class="responsive-iframe" width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="${mapUrl}"></iframe>`
 }
 
+/**
+ * Skriver ut datum, temperatur och väderbild till DOM
+ * 
+ * @param {object} weatherData - väderdata från API för unik badplats
+ * @returns {void} - returnerar inget värde
+ */
 function writeWeather(weatherData) {
     let day1El = document.querySelector("#day1");
     let day2El = document.querySelector("#day2");
@@ -165,6 +240,12 @@ function writeWeather(weatherData) {
     day5El.innerHTML = `<span class="time">${weatherData.data_day.time[4]}</span><br><span class="temp">${weatherData.data_day.temperature_mean[4]}°C</span><br><img src=/${weatherData.data_day.pictocode[4]}.svg alt="">`;
 }
 
+/**
+ * Filtrerar array från API utifrån sök-input
+ * 
+ * @param {array} dataArr - array med badplatser från API
+ * @returns {void} - returnerar inget värde, anropar funktion
+ */
 function searchFilter(dataArr) {
     let input = document.querySelector("#search").value.toLowerCase();
 
