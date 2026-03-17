@@ -157,16 +157,11 @@ function writeWeather(weatherData) {
     let day4El = document.querySelector("#day4");
     let day5El = document.querySelector("#day5");
 
-    day1El.innerHTML = `<span class="time">${weatherData.data_day.time[0]}</span><br><span class="temp">${weatherData.data_day.temperature_mean[0]}</span><br><img src=/${weatherData.data_day.pictocode[0]}.webp alt="">`;
-    day2El.innerHTML = `<span class="time">${weatherData.data_day.time[1]}</span><br><span class="temp">${weatherData.data_day.temperature_mean[1]}</span><br><img src=/${weatherData.data_day.pictocode[1]}.webp alt="">`;
-    day3El.innerHTML = `<span class="time">${weatherData.data_day.time[2]}</span><br><span class="temp">${weatherData.data_day.temperature_mean[2]}</span><br><img src=/${weatherData.data_day.pictocode[2]}.webp alt="">`;
-    day4El.innerHTML = `<span class="time">${weatherData.data_day.time[3]}</span><br><span class="temp">${weatherData.data_day.temperature_mean[3]}</span><br><img src=/${weatherData.data_day.pictocode[3]}.webp alt="">`;
-    day5El.innerHTML = `<span class="time">${weatherData.data_day.time[4]}</span><br><span class="temp">${weatherData.data_day.temperature_mean[4]}</span><br><img src=/${weatherData.data_day.pictocode[4]}.webp alt="">`;
-
-    /*weatherData.data_day.time[0]
-    weatherData.data_day.temperature_mean[0]
-    weatherData.data_day.pictocode[0]*/
-
+    day1El.innerHTML = `<span class="time">${weatherData.data_day.time[0]}</span><br><span class="temp">${weatherData.data_day.temperature_mean[0]}°C</span><br><img src=/${weatherData.data_day.pictocode[0]}.webp alt="">`;
+    day2El.innerHTML = `<span class="time">${weatherData.data_day.time[1]}</span><br><span class="temp">${weatherData.data_day.temperature_mean[1]}°C</span><br><img src=/${weatherData.data_day.pictocode[1]}.webp alt="">`;
+    day3El.innerHTML = `<span class="time">${weatherData.data_day.time[2]}</span><br><span class="temp">${weatherData.data_day.temperature_mean[2]}°C</span><br><img src=/${weatherData.data_day.pictocode[2]}.webp alt="">`;
+    day4El.innerHTML = `<span class="time">${weatherData.data_day.time[3]}</span><br><span class="temp">${weatherData.data_day.temperature_mean[3]}°C</span><br><img src=/${weatherData.data_day.pictocode[3]}.webp alt="">`;
+    day5El.innerHTML = `<span class="time">${weatherData.data_day.time[4]}</span><br><span class="temp">${weatherData.data_day.temperature_mean[4]}°C</span><br><img src=/${weatherData.data_day.pictocode[4]}.webp alt="">`;
 }
 
 function searchFilter(dataArr) {
