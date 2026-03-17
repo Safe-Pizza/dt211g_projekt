@@ -58,20 +58,24 @@ main {
     grid-template-rows: 1fr;
     margin-top: 4rem;
     padding: 2rem;
-    background-color: #FFFFFF;
 }
 
 #weather {
     div {
         text-align: center;
         border: 1px black solid;
-        margin-right: 2px;
+        margin-right: 10px;
         padding: 0.5rem;
         font-size: 3rem;
+        background-color: #FFFFFF;
     }
 
     span {
         color: base.$font-color;
+    }
+
+    img {
+        width: 100%;
     }
 }
 
@@ -99,7 +103,7 @@ main {
         color: base.$font-color-dark;
     }
 
-    span {
+    #result-beach span {
         color: base.$location-color-dark;
     }
 
@@ -123,4 +127,39 @@ main {
     article {
         border-color: base.$font-color-dark;
     }
+}
+
+@media screen and (max-width: 750px) {
+    //font sizes
+    a {
+    h1 {
+        font-size: base.$fontsize-h1-mo;
+    }
+}
+
+
+h1 {
+    font-size: base.$fontsize-h2-mo;
+}
+
+h2 {
+    font-size: base.$fontsize-h3-mo;
+}
+
+h3 {
+    font-size: base.$fontsize-h4-mo;
+}
+
+h4 {
+    font-size: base.$fontsize-h4-mo;
+}
+
+p {
+    font-size: base.$fontsize-p-mo;
+}
+
+#result-beach span {
+    font-size: base.$fontsize-h4-mo;
+}
+    
 }
