@@ -45,7 +45,20 @@ async function fetchLocationData(street) {
         return data;
 
     } catch (error) {
-        document.querySelector("#map").innerHTML = "Platsen finns ej, prova sök igen";
+        document.querySelector("#map").innerHTML = "Platsen finns ej";
+    }
+}
+
+async function fetchWeather(la, lo) {
+
+    try {
+        const res = await fetch(`https://my.meteoblue.com/packages/basic-day?&lat=${la}&lon=${lo}&forecast_days=5&format=json&apikey=2VzdlcIwe8H0MQrh`);
+        const data = await res.json();
+
+        writeWeather(data);
+
+    } catch (error) {
+        console.error(`Felmeddelande ${error}`);
     }
 }
 
@@ -127,11 +140,33 @@ async function showMap(address) {
     const lat = addressArr[0].lat;
     const lon = addressArr[0].lon;
 
+    //skicka koordinater till väderAPI
+    fetchWeather(lat, lon);
+
     //variabel för kart-url
     const mapUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${lon},${lat},${lon},${lat}&amp;layer=mapnik&amp;marker=${lat},${lon}`;
 
     //skriva ut karta till DOM
     mapEl.innerHTML = `<iframe class="responsive-iframe" width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="${mapUrl}"></iframe>`
+}
+
+function writeWeather(weatherData) {
+    let day1El = document.querySelector("#day1");
+    let day2El = document.querySelector("#day2");
+    let day3El = document.querySelector("#day3");
+    let day4El = document.querySelector("#day4");
+    let day5El = document.querySelector("#day5");
+
+    day1El.innerHTML = `<span class="time">${weatherData.data_day.time[0]}</span><br><span class="temp">${weatherData.data_day.temperature_mean[0]}</span><br><img src=/${weatherData.data_day.pictocode[0]}.webp alt="">`;
+    day2El.innerHTML = `<span class="time">${weatherData.data_day.time[1]}</span><br><span class="temp">${weatherData.data_day.temperature_mean[1]}</span><br><img src=/${weatherData.data_day.pictocode[1]}.webp alt="">`;
+    day3El.innerHTML = `<span class="time">${weatherData.data_day.time[2]}</span><br><span class="temp">${weatherData.data_day.temperature_mean[2]}</span><br><img src=/${weatherData.data_day.pictocode[2]}.webp alt="">`;
+    day4El.innerHTML = `<span class="time">${weatherData.data_day.time[3]}</span><br><span class="temp">${weatherData.data_day.temperature_mean[3]}</span><br><img src=/${weatherData.data_day.pictocode[3]}.webp alt="">`;
+    day5El.innerHTML = `<span class="time">${weatherData.data_day.time[4]}</span><br><span class="temp">${weatherData.data_day.temperature_mean[4]}</span><br><img src=/${weatherData.data_day.pictocode[4]}.webp alt="">`;
+
+    /*weatherData.data_day.time[0]
+    weatherData.data_day.temperature_mean[0]
+    weatherData.data_day.pictocode[0]*/
+
 }
 
 function searchFilter(dataArr) {

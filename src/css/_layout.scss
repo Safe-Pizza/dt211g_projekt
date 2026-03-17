@@ -52,6 +52,24 @@ main {
     }
 }
 
+#weather {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    margin-top: 4rem;
+    padding: 2rem;
+    background-color: #FFFFFF;
+}
+
+#weather {
+    div {
+        text-align: center;
+        border: 1px black solid;
+        margin-right: 2px;
+        padding: 0.5rem;
+    }
+}
+
 //Animationer
 .animation-scale {
     transform: 1s;
