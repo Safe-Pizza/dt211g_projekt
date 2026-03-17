@@ -110,6 +110,7 @@ async function writeUniqueData(uniqueBeachData) {
     const resultBeachEl = document.querySelector("#result-beach");
     resultBeachEl.innerHTML = "";
 
+    //skapa html element
     const articleEl = document.createElement("article");
     const h2El = document.createElement("h2");
     const spanEl = document.createElement("span");

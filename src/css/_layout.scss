@@ -96,6 +96,10 @@ main {
     animation: flyingSun 6s linear 1;
 }
 
+.hidden {
+    visibility: hidden;
+}
+
 //prefers dark
 @media (prefers-color-scheme: dark) {
     body {
@@ -159,7 +163,7 @@ p {
 }
 
 #result-beach span {
-    font-size: base.$fontsize-h4-mo;
+    font-size: base.$fontsize-p-mo;
 }
 
 #weather {
