@@ -1,0 +1,9 @@
+@keyframes flyingSun {
+    0% {
+        transform: translate(110vw, 0);
+        opacity: 0.8;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}

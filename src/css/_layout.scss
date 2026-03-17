@@ -61,6 +61,14 @@ main {
     transform: scale(1.05);
 }
 
+#sun {
+    position: fixed;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    animation: flyingSun 10s linear 2;
+}
+
 //prefers dark
 @media (prefers-color-scheme: dark) {
     body {
