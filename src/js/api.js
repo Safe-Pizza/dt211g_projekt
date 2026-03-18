@@ -64,6 +64,7 @@ async function fetchWeather(la, lo) {
 
 function writeData(data) {
     const resultBeachEl = document.querySelector("#result-beach");
+    document.querySelector("#weather").style.visibility = "hidden";
     resultBeachEl.innerHTML = "";
 
     data.forEach(d => {
@@ -97,6 +98,7 @@ function writeData(data) {
 
 async function writeUniqueData(uniqueBeachData) {
     const beachData = await fetchUniqueData(uniqueBeachData);
+        document.querySelector("#weather").style.visibility = "visible";
 
     //scrolla högst upp
     window.scrollTo(0, 0);
