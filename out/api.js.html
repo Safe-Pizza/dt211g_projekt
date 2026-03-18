@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: api.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: api.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>"use strict";
+let allData = [];
+
+/**
+ * Händelselyssnare för DOM färdigladdat
+ * Anropar sedan fetchData för att hämta innehåll
+ * 
+ * @event DOMContentLoaded
+ * @returns {void} - returnerar inget värde utan anropar funktion när DOM laddat klart
+ */
+document.addEventListener("DOMContentLoaded", () => {
+    fetchData();
+
+    /**
+     * Händelselyssnare för inputfält
+     * Vid input anropas funktion searchFilter
+     * 
+     * @param {array} allData - array med data sparad vid API-hämtning
+     * @returns {void} - returnerar inget värde, anropar funktion vid input
+     */
+    document.querySelector("#search").addEventListener("input", () => {
+        searchFilter(allData);
+    });
+})
+
+/**
+ * Hämtar Stockholms Stads badplatser från API
+ * Data skickas vidare till writeData, data lagras i variabel
+ * 
+ * @property {array} allData - array med data från API
+ * @returns {void} - returnerar inget värde, anropar funktion
+ * @throws {error} - skriver ut fel i konsol om hämtning misslyckas
+ */
+async function fetchData() {
+    try {
+        const response = await fetch("https://apigw.stockholm.se/api/PublicHittaCMS/api/serviceunits?&amp;filter[servicetype.id]=104&amp;page[limit]=1500&amp;page[offset]=0&amp;sort=name");
+        const data = await response.json();
+
+        allData = data.data;
+        writeData(data.data);
+
+    } catch (error) {
+        console.error(`Felmeddelande ${error}`);
+    }
+}
+
+/**
+ * Hämtar unik badplats från Stockholms Stads API
+ * 
+ * @param {url} uniqueData - URL för unik badplats
+ * @returns {object} - returnerar objekt för specifik badplats
+ * @throws {error} - skriver ut fel i konsol om hämtning misslyckas
+ */
+async function fetchUniqueData(uniqueData) {
+    try {
+        const response = await fetch(uniqueData);
+        const data = await response.json();
+
+        return data.data;
+
+    } catch (error) {
+        console.error(`Felmeddelande ${error}`);
+    }
+}
+
+/**
+ * Hämtar geo-info om specifik gatuadress från API
+ * 
+ * @param {string} street - textsträng med badplats gatuadress
+ * @returns {array} - returerar array med positionsdata för gatuadress
+ * @throws {error} - skriver ut felmeddelande i DOM om hämtning misslyckas
+ */
+async function fetchLocationData(street) {
+    try {
+        const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${street}&amp;format=jsonv2`);
+        const data = await res.json();
+
+        return data;
+
+    } catch (error) {
+        document.querySelector("#map").innerHTML = "Platsen finns ej";
+    }
+}
+
+/**
+ * Hämtar väder-info för specifik plats från API
+ * 
+ * @param {string} la - textsträng med latitud
+ * @param {string} lo - textsträng med longitud
+ * @returns {void} - returnerar inget värde, anropar funktion
+ * @throws {error} - skriver ut fel i konsol om hämtning misslyckas
+ */
+async function fetchWeather(la, lo) {
+
+    try {
+        const res = await fetch(`https://my.meteoblue.com/packages/basic-day?&amp;lat=${la}&amp;lon=${lo}&amp;forecast_days=5&amp;format=json&amp;apikey=2VzdlcIwe8H0MQrh`);
+        const data = await res.json();
+
+        writeWeather(data);
+
+    } catch (error) {
+        console.error(`Felmeddelande ${error}`);
+    }
+}
+
+/**
+ * Skapar DOM-element med innehåll från API
+ * och skriver ut till DOM
+ * 
+ * @param {array} data - array med badplatser från Stockholm Stads API
+ * @returns {void} - returnerar inget värde
+ */
+function writeData(data) {
+    const resultBeachEl = document.querySelector("#result-beach");
+    document.querySelector("#weather").style.visibility = "hidden";
+    resultBeachEl.innerHTML = "";
+
+    data.forEach(d => {
+
+        const articleEl = document.createElement("article");
+        const h2El = document.createElement("h2");
+        const spanEl = document.createElement("span");
+
+        articleEl.classList.add("link");
+        articleEl.classList.add("animation-scale");
+
+        //lägg till text
+        h2El.innerHTML = d.attributes.name.toUpperCase();
+        spanEl.innerHTML = d.attributes.address.street.toUpperCase() + ', ' + d.attributes.address.city.toUpperCase() + '&lt;span class="fa-solid fa-location-dot"&lt;/span>';
+
+        //lägg till i article
+        articleEl.appendChild(h2El);
+        articleEl.appendChild(spanEl);
+
+        //skriv ut till DOM
+        resultBeachEl.appendChild(articleEl);
+
+        /**
+         * Händelselyssnare för klick på article-element
+         * Anropar funktioner writeUniqueData och ShowMap
+         * 
+         * @event click
+         * @returns {void} - returerar inget värde, anropar funktioner
+         * 
+         */
+        articleEl.addEventListener("click", async () => {
+            writeUniqueData(d.links.self);
+            showMap(d.attributes.address.street);
+        })
+    })
+
+}
+
+/**
+ * Skapar DOM-element för unik badplats från API
+ * och skriver ut till DOM
+ * 
+ * @param {object} uniqueBeachData - object för specifik badplats från API
+ * @returns {void} - returerar inget värde
+ */
+async function writeUniqueData(uniqueBeachData) {
+    const beachData = await fetchUniqueData(uniqueBeachData);
+        document.querySelector("#weather").style.visibility = "visible";
+
+    //scrolla högst upp
+    window.scrollTo(0, 0);
+
+    //ta bort start innehåll
+    document.querySelector("#start-content").innerHTML = "";
+
+    //göm sökfält
+    document.querySelector("#search").style.display = "none";
+
+    const resultBeachEl = document.querySelector("#result-beach");
+    resultBeachEl.innerHTML = "";
+
+    //skapa html element
+    const articleEl = document.createElement("article");
+    const h2El = document.createElement("h2");
+    const spanEl = document.createElement("span");
+    const pEl = document.createElement("p");
+    const divEl = document.createElement("div");
+
+    //lägg till text
+    h2El.innerHTML = beachData.attributes.name.toUpperCase();
+    spanEl.innerHTML = beachData.attributes.address.street.toUpperCase() + ', ' + beachData.attributes.address.city.toUpperCase() + '&lt;span class="fa-solid fa-location-dot"&lt;/span>';
+    pEl.innerHTML = beachData.attributes.shortDescription;
+    divEl.innerHTML = beachData.attributes.contentSections["17"].content;
+
+    //lägg till i article
+    articleEl.appendChild(h2El);
+    articleEl.appendChild(spanEl);
+    articleEl.appendChild(pEl);
+    articleEl.appendChild(divEl);
+
+    //skriv ut till DOM
+    resultBeachEl.appendChild(articleEl);
+}
+
+/**
+ * Skriver ut karta för badplats till DOM
+ * och anropar väder-funktion
+ * 
+ * @param {string} address - textsträng med gatuadress för unik badplats
+ * @returns {void} - returnerar inget värde
+ */
+async function showMap(address) {
+    const addressArr = await fetchLocationData(address);
+    const mapEl = document.querySelector("#map");
+
+    //latitud och longitud från första objektet i sökning
+    const lat = addressArr[0].lat;
+    const lon = addressArr[0].lon;
+
+    //skicka koordinater till väderAPI
+    fetchWeather(lat, lon);
+
+    //variabel för kart-url
+    const mapUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${lon},${lat},${lon},${lat}&amp;amp;layer=mapnik&amp;amp;marker=${lat},${lon}`;
+
+    //skriva ut karta till DOM
+    mapEl.innerHTML = `&lt;iframe class="responsive-iframe" width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="${mapUrl}">&lt;/iframe>`
+}
+
+/**
+ * Skriver ut datum, temperatur och väderbild till DOM
+ * 
+ * @param {object} weatherData - väderdata från API för unik badplats
+ * @returns {void} - returnerar inget värde
+ */
+function writeWeather(weatherData) {
+    let day1El = document.querySelector("#day1");
+    let day2El = document.querySelector("#day2");
+    let day3El = document.querySelector("#day3");
+    let day4El = document.querySelector("#day4");
+    let day5El = document.querySelector("#day5");
+
+    day1El.innerHTML = `&lt;span class="time">${weatherData.data_day.time[0]}&lt;/span>&lt;br>&lt;span class="temp">${weatherData.data_day.temperature_mean[0]}°C&lt;/span>&lt;br>&lt;img src=/${weatherData.data_day.pictocode[0]}.svg alt="">`;
+    day2El.innerHTML = `&lt;span class="time">${weatherData.data_day.time[1]}&lt;/span>&lt;br>&lt;span class="temp">${weatherData.data_day.temperature_mean[1]}°C&lt;/span>&lt;br>&lt;img src=/${weatherData.data_day.pictocode[1]}.svg alt="">`;
+    day3El.innerHTML = `&lt;span class="time">${weatherData.data_day.time[2]}&lt;/span>&lt;br>&lt;span class="temp">${weatherData.data_day.temperature_mean[2]}°C&lt;/span>&lt;br>&lt;img src=/${weatherData.data_day.pictocode[2]}.svg alt="">`;
+    day4El.innerHTML = `&lt;span class="time">${weatherData.data_day.time[3]}&lt;/span>&lt;br>&lt;span class="temp">${weatherData.data_day.temperature_mean[3]}°C&lt;/span>&lt;br>&lt;img src=/${weatherData.data_day.pictocode[3]}.svg alt="">`;
+    day5El.innerHTML = `&lt;span class="time">${weatherData.data_day.time[4]}&lt;/span>&lt;br>&lt;span class="temp">${weatherData.data_day.temperature_mean[4]}°C&lt;/span>&lt;br>&lt;img src=/${weatherData.data_day.pictocode[4]}.svg alt="">`;
+}
+
+/**
+ * Filtrerar array från API utifrån sök-input
+ * 
+ * @param {array} dataArr - array med badplatser från API
+ * @returns {void} - returnerar inget värde, anropar funktion
+ */
+function searchFilter(dataArr) {
+    let input = document.querySelector("#search").value.toLowerCase();
+
+    let dataArrFilt = dataArr.filter((data) =>
+        data.attributes.name.toLowerCase().includes(input) ||
+        data.attributes.address.street.toLowerCase().includes(input) ||
+        data.attributes.address.city.toLowerCase().includes(input)
+    );
+
+    writeData(dataArrFilt);
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Events</h3><ul><li><a href="global.html#event:DOMContentLoaded">DOMContentLoaded</a></li><li><a href="global.html#event:click">click</a></li></ul><h3>Global</h3><ul><li><a href="global.html#fetchData">fetchData</a></li><li><a href="global.html#fetchLocationData">fetchLocationData</a></li><li><a href="global.html#fetchUniqueData">fetchUniqueData</a></li><li><a href="global.html#fetchWeather">fetchWeather</a></li><li><a href="global.html#searchFilter">searchFilter</a></li><li><a href="global.html#showMap">showMap</a></li><li><a href="global.html#writeData">writeData</a></li><li><a href="global.html#writeUniqueData">writeUniqueData</a></li><li><a href="global.html#writeWeather">writeWeather</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Mar 18 2026 10:07:29 GMT+0100 (centraleuropeisk normaltid)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
