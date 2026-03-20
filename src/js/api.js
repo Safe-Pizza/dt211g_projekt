@@ -21,6 +21,10 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#search").addEventListener("input", () => {
         searchFilter(allData);
     });
+
+    document.querySelector("#startsida").addEventListener("click", () => {
+        writeData(allData);
+    })
 })
 
 /**
@@ -113,6 +117,8 @@ async function fetchWeather(la, lo) {
 function writeData(data) {
     const resultBeachEl = document.querySelector("#result-beach");
     document.querySelector("#weather").style.visibility = "hidden";
+    document.querySelector("#start-content").style.display = "block";
+    document.querySelector("#search").style.display = "block";
     resultBeachEl.innerHTML = "";
 
     data.forEach(d => {
@@ -160,13 +166,13 @@ function writeData(data) {
  */
 async function writeUniqueData(uniqueBeachData) {
     const beachData = await fetchUniqueData(uniqueBeachData);
-        document.querySelector("#weather").style.visibility = "visible";
+    document.querySelector("#weather").style.visibility = "visible";
 
     //scrolla högst upp
     window.scrollTo(0, 0);
 
-    //ta bort start innehåll
-    document.querySelector("#start-content").innerHTML = "";
+    //göm start innehåll
+    document.querySelector("#start-content").style.display = "none";
 
     //göm sökfält
     document.querySelector("#search").style.display = "none";
@@ -176,25 +182,35 @@ async function writeUniqueData(uniqueBeachData) {
 
     //skapa html element
     const articleEl = document.createElement("article");
-    const h2El = document.createElement("h2");
+    const divButtonEl = document.createElement("div");
+    const buttonEl = document.createElement("button");
+    const h1El = document.createElement("h1");
     const spanEl = document.createElement("span");
     const pEl = document.createElement("p");
     const divEl = document.createElement("div");
 
     //lägg till text
-    h2El.innerHTML = beachData.attributes.name.toUpperCase();
+    buttonEl.innerHTML = "Tillbaka";
+    h1El.innerHTML = beachData.attributes.name.toUpperCase();
     spanEl.innerHTML = beachData.attributes.address.street.toUpperCase() + ', ' + beachData.attributes.address.city.toUpperCase() + '<span class="fa-solid fa-location-dot"</span>';
     pEl.innerHTML = beachData.attributes.shortDescription;
     divEl.innerHTML = beachData.attributes.contentSections["17"].content;
 
+    divButtonEl.appendChild(buttonEl);
+
     //lägg till i article
-    articleEl.appendChild(h2El);
+    articleEl.appendChild(divButtonEl);
+    articleEl.appendChild(h1El);
     articleEl.appendChild(spanEl);
     articleEl.appendChild(pEl);
     articleEl.appendChild(divEl);
 
     //skriv ut till DOM
     resultBeachEl.appendChild(articleEl);
+
+    buttonEl.addEventListener("click", () => {
+        writeData(allData);
+    })
 }
 
 /**
