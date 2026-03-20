@@ -1,4 +1,5 @@
 @use 'base';
+@use 'sass:color';
 
 //sökfält
 #search {
@@ -14,6 +15,15 @@ article {
 
 article.link {
     cursor: pointer;
+}
+
+button {
+    @include base.button;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: color.scale(base.$accent-color, $lightness: 20%);
 }
 
 //kart div

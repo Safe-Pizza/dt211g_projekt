@@ -38,6 +38,14 @@ $fontsize-p-mo: 1.5rem;
     width: 100%;
 }
 
+@mixin button() {
+    padding: 1rem;
+    background-color: $accent-color;
+    color: black;
+    font-size: $fontsize-p;
+    border-radius: 5px;
+}
+
 
 //grundinställning för webbplatsen
 * {
