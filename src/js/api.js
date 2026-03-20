@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
      * Händelselyssnare för inputfält
      * Vid input anropas funktion searchFilter
      * 
+     * @event Input
      * @param {array} allData - array med data sparad vid API-hämtning
      * @returns {void} - returnerar inget värde, anropar funktion vid input
      */
@@ -22,6 +23,14 @@ document.addEventListener("DOMContentLoaded", () => {
         searchFilter(allData);
     });
 
+    /**
+     * Händelselyssnare för knapp på unik badplats
+     * Vid klick körs funktion writeData
+     * 
+     * @event Click
+     * @param {array} allData - array med data sparad vid API-hämtning av badplatser
+     * @returns {void} - returnerar inget värde, anropar funktion vid klick
+     */
     document.querySelector("#startsida").addEventListener("click", () => {
         writeData(allData);
     })
@@ -145,7 +154,7 @@ function writeData(data) {
          * Händelselyssnare för klick på article-element
          * Anropar funktioner writeUniqueData och ShowMap
          * 
-         * @event click
+         * @event Click
          * @returns {void} - returerar inget värde, anropar funktioner
          * 
          */
@@ -208,6 +217,14 @@ async function writeUniqueData(uniqueBeachData) {
     //skriv ut till DOM
     resultBeachEl.appendChild(articleEl);
 
+    /**
+     * Händelselyssnare för button-element
+     * kör funktion writeData
+     * 
+     * @event Click
+     * @param {array} allData - array med badplatser från API-hämtning
+     * @returns {void} - returnerar inget värde, anropar funktion
+     */
     buttonEl.addEventListener("click", () => {
         writeData(allData);
     })

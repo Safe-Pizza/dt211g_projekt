@@ -43,12 +43,25 @@ document.addEventListener("DOMContentLoaded", () => {
      * Händelselyssnare för inputfält
      * Vid input anropas funktion searchFilter
      * 
+     * @event Input
      * @param {array} allData - array med data sparad vid API-hämtning
      * @returns {void} - returnerar inget värde, anropar funktion vid input
      */
     document.querySelector("#search").addEventListener("input", () => {
         searchFilter(allData);
     });
+
+    /**
+     * Händelselyssnare för knapp på unik badplats
+     * Vid klick körs funktion writeData
+     * 
+     * @event Click
+     * @param {array} allData - array med data sparad vid API-hämtning av badplatser
+     * @returns {void} - returnerar inget värde, anropar funktion vid klick
+     */
+    document.querySelector("#startsida").addEventListener("click", () => {
+        writeData(allData);
+    })
 })
 
 /**
@@ -141,6 +154,8 @@ async function fetchWeather(la, lo) {
 function writeData(data) {
     const resultBeachEl = document.querySelector("#result-beach");
     document.querySelector("#weather").style.visibility = "hidden";
+    document.querySelector("#start-content").style.display = "block";
+    document.querySelector("#search").style.display = "block";
     resultBeachEl.innerHTML = "";
 
     data.forEach(d => {
@@ -167,7 +182,7 @@ function writeData(data) {
          * Händelselyssnare för klick på article-element
          * Anropar funktioner writeUniqueData och ShowMap
          * 
-         * @event click
+         * @event Click
          * @returns {void} - returerar inget värde, anropar funktioner
          * 
          */
@@ -188,13 +203,13 @@ function writeData(data) {
  */
 async function writeUniqueData(uniqueBeachData) {
     const beachData = await fetchUniqueData(uniqueBeachData);
-        document.querySelector("#weather").style.visibility = "visible";
+    document.querySelector("#weather").style.visibility = "visible";
 
     //scrolla högst upp
     window.scrollTo(0, 0);
 
-    //ta bort start innehåll
-    document.querySelector("#start-content").innerHTML = "";
+    //göm start innehåll
+    document.querySelector("#start-content").style.display = "none";
 
     //göm sökfält
     document.querySelector("#search").style.display = "none";
@@ -204,25 +219,43 @@ async function writeUniqueData(uniqueBeachData) {
 
     //skapa html element
     const articleEl = document.createElement("article");
-    const h2El = document.createElement("h2");
+    const divButtonEl = document.createElement("div");
+    const buttonEl = document.createElement("button");
+    const h1El = document.createElement("h1");
     const spanEl = document.createElement("span");
     const pEl = document.createElement("p");
     const divEl = document.createElement("div");
 
     //lägg till text
-    h2El.innerHTML = beachData.attributes.name.toUpperCase();
+    buttonEl.innerHTML = "Tillbaka";
+    h1El.innerHTML = beachData.attributes.name.toUpperCase();
     spanEl.innerHTML = beachData.attributes.address.street.toUpperCase() + ', ' + beachData.attributes.address.city.toUpperCase() + '&lt;span class="fa-solid fa-location-dot"&lt;/span>';
     pEl.innerHTML = beachData.attributes.shortDescription;
     divEl.innerHTML = beachData.attributes.contentSections["17"].content;
 
+    divButtonEl.appendChild(buttonEl);
+
     //lägg till i article
-    articleEl.appendChild(h2El);
+    articleEl.appendChild(divButtonEl);
+    articleEl.appendChild(h1El);
     articleEl.appendChild(spanEl);
     articleEl.appendChild(pEl);
     articleEl.appendChild(divEl);
 
     //skriv ut till DOM
     resultBeachEl.appendChild(articleEl);
+
+    /**
+     * Händelselyssnare för button-element
+     * kör funktion writeData
+     * 
+     * @event Click
+     * @param {array} allData - array med badplatser från API-hämtning
+     * @returns {void} - returnerar inget värde, anropar funktion
+     */
+    buttonEl.addEventListener("click", () => {
+        writeData(allData);
+    })
 }
 
 /**
@@ -296,13 +329,13 @@ function searchFilter(dataArr) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Events</h3><ul><li><a href="global.html#event:DOMContentLoaded">DOMContentLoaded</a></li><li><a href="global.html#event:click">click</a></li></ul><h3>Global</h3><ul><li><a href="global.html#fetchData">fetchData</a></li><li><a href="global.html#fetchLocationData">fetchLocationData</a></li><li><a href="global.html#fetchUniqueData">fetchUniqueData</a></li><li><a href="global.html#fetchWeather">fetchWeather</a></li><li><a href="global.html#searchFilter">searchFilter</a></li><li><a href="global.html#showMap">showMap</a></li><li><a href="global.html#writeData">writeData</a></li><li><a href="global.html#writeUniqueData">writeUniqueData</a></li><li><a href="global.html#writeWeather">writeWeather</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Events</h3><ul><li><a href="global.html#event:Click">Click</a></li><li><a href="global.html#event:DOMContentLoaded">DOMContentLoaded</a></li><li><a href="global.html#event:Input">Input</a></li></ul><h3>Global</h3><ul><li><a href="global.html#fetchData">fetchData</a></li><li><a href="global.html#fetchLocationData">fetchLocationData</a></li><li><a href="global.html#fetchUniqueData">fetchUniqueData</a></li><li><a href="global.html#fetchWeather">fetchWeather</a></li><li><a href="global.html#searchFilter">searchFilter</a></li><li><a href="global.html#showMap">showMap</a></li><li><a href="global.html#writeData">writeData</a></li><li><a href="global.html#writeUniqueData">writeUniqueData</a></li><li><a href="global.html#writeWeather">writeWeather</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Mar 18 2026 10:07:29 GMT+0100 (centraleuropeisk normaltid)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Fri Mar 20 2026 15:19:15 GMT+0100 (centraleuropeisk normaltid)
 </footer>
 
 <script> prettyPrint(); </script>
