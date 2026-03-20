@@ -81,7 +81,7 @@ main {
 
 //Animationer
 .animation-scale {
-    transform: 1s;
+    transition: 50ms;
 }
 
 .animation-scale:hover {
@@ -93,7 +93,7 @@ main {
     top: 0;
     left: 0;
     opacity: 0;
-    animation: flyingSun 6s linear 1;
+    animation: flyingSun 3s linear 1;
 }
 
 .hidden {
